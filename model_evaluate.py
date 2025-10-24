@@ -22,10 +22,6 @@ def evaluate_model(y_true, y_pred, model_name, target_name, feature_names=None, 
     n = len(y_true)
     p = X_test.shape[1] if 'X_test' in locals() else len(feature_names) if feature_names is not None else 1
     
-    # Handle division by zero in MAPE
-    with np.errstate(divide='ignore', invalid='ignore'):
-        mape = np.mean(np.abs((y_true - y_pred) / np.where(y_true == 0, 1, y_true))) * 100
-    
     adj_r2 = 1 - ((1 - r2) * (n - 1) / (n - p - 1)) if (n - p - 1) > 0 else r2
     ev = explained_variance_score(y_true, y_pred)
 
@@ -35,13 +31,12 @@ def evaluate_model(y_true, y_pred, model_name, target_name, feature_names=None, 
     print(f"RMSE: {rmse:.3f}")
     print(f"R²: {r2:.3f}")
     print(f"Adjusted R²: {adj_r2:.3f}")
-    print(f"MAPE: {mape:.2f}%")
     print(f"Explained Variance: {ev:.3f}")
     print(f"Sample Size: {len(y_true)}")
     if len(y_true) > 10000:
         print(f"Visualization Sample: 5,000 points")
 
-    # 1. Scatter Plot: Actual vs Predicted (using sampled data)
+    # 1. Scatter Plot: Actual vs Predicted
     plt.figure(figsize=(6, 6))
     plt.scatter(y_true_viz, y_pred_viz, alpha=0.6, s=10)
     max_val = max(y_true_viz.max(), y_pred_viz.max())
@@ -55,7 +50,7 @@ def evaluate_model(y_true, y_pred, model_name, target_name, feature_names=None, 
     plt.tight_layout()
     plt.show()
 
-    # 2. Residual Plot (using sampled data)
+    # 2. Residual Plot
     residuals_viz = y_true_viz - y_pred_viz
     plt.figure(figsize=(8, 5))
     plt.scatter(y_pred_viz, residuals_viz, alpha=0.6, s=10)
@@ -68,7 +63,7 @@ def evaluate_model(y_true, y_pred, model_name, target_name, feature_names=None, 
     plt.tight_layout()
     plt.show()
 
-    # 3. Error Distribution (using sampled data)
+    # 3. Error Distribution
     plt.figure(figsize=(8, 5))
     sns.histplot(residuals_viz, bins=50, kde=True, alpha=0.7)
     plt.axvline(x=0, color='red', linestyle='--', linewidth=2, label='Zero Error')
@@ -80,7 +75,7 @@ def evaluate_model(y_true, y_pred, model_name, target_name, feature_names=None, 
     plt.tight_layout()
     plt.show()
 
-    # 4. Time Series Comparison (first 200 samples for clarity)
+    # 4. Time Series Comparison
     plt.figure(figsize=(12, 6))
     sample_size_ts = min(200, len(y_true))
     plt.plot(range(sample_size_ts), y_true[:sample_size_ts], label='Actual', linewidth=2, alpha=0.8)
@@ -106,7 +101,7 @@ def evaluate_model(y_true, y_pred, model_name, target_name, feature_names=None, 
         plt.xlabel("Feature Importance Score")
         plt.title(f"{model_name} - {target_name}\nFeature Importance")
         
-        # Add value labels on bars
+        # Add value labels
         for i, v in enumerate(importance_df['Importance']):
             plt.text(v + 0.01, i, f'{v:.3f}', va='center', fontsize=9)
             
@@ -119,5 +114,5 @@ def evaluate_model(y_true, y_pred, model_name, target_name, feature_names=None, 
 
     return {
         'mae': mae, 'mse': mse, 'rmse': rmse, 'r2': r2, 
-        'adj_r2': adj_r2, 'mape': mape, 'explained_variance': ev
+        'adj_r2': adj_r2, 'explained_variance': ev
     }

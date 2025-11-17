@@ -16,69 +16,65 @@ Contribute to sustainable energy infrastructure
 
 
 Our hybrid LSTM+CNN model combines:
-
 CNN layers for spatial feature extraction from weather patterns
 LSTM layers for temporal sequence learning
 Dense layers for non-linear mapping to energy production
 
 This architecture outperforms all baseline models in prediction accuracy.
 
-🔍 Problem Statement
-Renewable energy sources like solar and wind are intermittent and weather-dependent, creating challenges for:
+## 🔍 Problem Statement
 
-Grid stability and power distribution
-Energy storage planning
-Backup power management
-Cost optimization
 
-Solution: Machine learning models that can accurately forecast energy production based on weather conditions, enabling better planning and resource allocation.
+Renewable energy sources like solar and wind are intermittent and weather-dependent, creating challenges for grid stability and power distribution, energy storage planning, backup power management and cost optimization.
 
-🔄 Model Evolution Pipeline
+## 🔄 Model Evolution Pipeline
+
 This project follows a progressive modeling approach, where each model builds upon insights from previous iterations:
-Phase 1: Traditional Machine Learning
-1️⃣ Linear Regression (Baseline)
+## Phase 1: Traditional Machine Learning
+## 1️⃣ Linear Regression (Baseline)
 
-Purpose: Establish performance baseline
-Approach: Simple linear relationships between weather features and energy output
-Advantages: Fast training, interpretable coefficients
-Limitations: Cannot capture non-linear patterns
+1. Purpose: Establish performance baseline against which all complex models are compared.
 
-2️⃣ Support Vector Regression (SVR)
+2. Approach: Models the simple linear relationships between meteorological and temporal features and the corresponding energy output.
 
-Purpose: Introduce non-linearity with kernel methods
-Approach: RBF kernel to map features into higher dimensions
-Advantages: Handles non-linear relationships, robust to outliers
-Limitations: Computationally expensive for large datasets
+3. Advantages: Fast training speed, high interpretability due to easy-to-understand coefficients.
 
-Phase 2: Ensemble Methods
-3️⃣ Bagging Models (Random Forest)
+4. Limitations: Fundamentally unable to capture the complex, non-linear patterns and interactions characteristic of renewable energy data (e.g., the sharp S-curve of solar production).
 
-Purpose: Reduce variance through ensemble learning
-Approach: Multiple decision trees with bootstrap sampling
-Advantages:
+## 2️⃣ Support Vector Regression (SVR)
 
-Feature importance analysis
-Handles missing data well
-Reduced overfitting
+1. Purpose: Introduce a model capable of handling non-linear relationships with high dimensionality.
 
+2. Approach: Uses a technique called the "kernel trick" to implicitly map the input features into a high-dimensional feature space. This allows the model to find a linear separation (or fit) in that high-dimensional space, which corresponds to a non-linear relationship in the original space.
 
-Key Insight: Identifies most influential weather parameters
+3. Advantages: Highly effective in non-linear modeling, robust against overfitting, and works well even when the number of features is greater than the number of samples.
 
-4️⃣ Boosting Models (Gradient Boosting, XGBoost)
+4. Limitations: Computationally expensive and slow to train on very large datasets compared to tree-based methods. Performance is highly dependent on the choice of kernel function (e.g., Radial Basis Function or RBF) and hyperparameter tuning.
 
-Purpose: Reduce bias through sequential learning
-Approach: Iteratively correct errors of previous models
-Advantages:
+## Phase 2: Ensemble Methods
+## 3️⃣ Bagging Models (Random Forest)
 
-High prediction accuracy
-Handles complex interactions
-Built-in feature selection
+1. Purpose: Reduce variance and improve stability through ensemble learning.
+
+2. Approach: Trains multiple decision trees independently on different subsets of the data (bootstrap samples) and aggregates their predictions (averaging for regression).
+
+3. Advantages: Reduced overfitting, high parallelization capacity, and provides valuable feature importance analysis.
+
+4. Key Insight: Identifies the most influential static weather parameters (e.g., specific wind speed or GHI ranges) on energy output, giving early insights into feature causality.
 
 
-Key Insight: Captures subtle weather-energy relationships
+## 4️⃣ Boosting Models (Gradient Boosting, XGBoost)
 
-Phase 3: Deep Learning
-5️⃣ LSTM (Long Short-Term Memory)
+1. Purpose: Reduce model bias by sequentially improving weak learners.
+
+2. Approach: Iteratively builds an ensemble where each new decision tree attempts to correct the errors (residuals) made by the combination of all previous trees.
+
+3. Advantages: High prediction accuracy, superior handling of complex interactions, and built-in regularization (in modern implementations like XGBoost) to prevent overfitting.
+
+4. Key Insight: Provides the strongest non-temporal benchmark performance by focusing prediction power on the hardest-to-predict data points.
+
+## Phase 3: Deep Learning
+## 5️⃣ LSTM (Long Short-Term Memory)
 
 Purpose: Capture temporal dependencies in time-series data
 Architecture:

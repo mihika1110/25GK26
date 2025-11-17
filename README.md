@@ -1,157 +1,145 @@
-# Renewable-Energy-Production-Prediction-Using-Hybrid-Machine-Learning-Models
+
+
+# ⚡ Renewable Energy Production Prediction Using Hybrid ML Models
+
+[![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python Version](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
+[![Model Performance](https://img.shields.io/badge/CNN%2BLSTM%20R%C2%B2-0.983%20PV%20%7C%200.965%20Wind-success)](README.md#results-and-best-performance)
 
 ## 🌟 Overview
-This project presents a systematic approach to renewable energy forecasting by implementing and comparing six different machine learning models, progressing from traditional statistical methods to advanced deep learning architectures. The final LSTM+CNN hybrid model achieves superior performance in predicting both Solar Photovoltaic (PV) and Wind energy production.
+
+This project presents a systematic and rigorous approach to **renewable energy forecasting** by implementing and comparing six distinct machine learning models, progressing from traditional statistical methods to advanced deep learning architectures. The final **CNN-LSTM hybrid model** achieves superior performance in accurately predicting both **Solar Photovoltaic (PV)** and **Wind energy production**.
+
+---
+
+## 🎯 Project Objectives & Problem Statement
+
+### Problem Statement
+Renewable energy sources like solar and wind are inherently **intermittent and weather-dependent**. This instability poses significant challenges for:
+* **Grid Stability:** Difficulty in balancing power supply and demand.
+* **Energy Planning:** Accurate scheduling of energy storage and backup power.
+* **Cost Optimization:** Minimizing reliance on expensive, fast-response fossil fuel plants.
+
+Our project tackles this clear problem by creating models that can match unstable renewable energy supply with the need for a **stable, low-cost power grid**.
+
+### Core Objectives
+* Build a **robust prediction system** for future renewable energy production.
+* Systematically compare traditional ML and advanced deep learning approaches to establish performance benchmarks.
+* Develop and validate the **Hybrid CNN-LSTM architecture** for optimal prediction accuracy.
+* Provide actionable forecasting data to support **grid management** and **energy planning decisions**.
+
+  <img width="1108" height="621" alt="image" src="https://github.com/user-attachments/assets/9373ea7d-f354-48d1-9784-bd8276d08399" />
 
 
-## 🎯 Objectives
+---
 
-Build a robust prediction system for renewable energy production
-Compare traditional ML and deep learning approaches systematically
-Develop a hybrid LSTM+CNN architecture for optimal performance
-Support grid management and energy planning decisions
-Contribute to sustainable energy infrastructure
+## 🛠️ Methodology and Data Processing
 
-## 🏆 Key Achievement
+### 1. Our Dataset
+* **Data Size:** 38,880 samples collected at **5-minute intervals**.
+* **Coverage:** Complete annual cycle, capturing all seasonal variations.
+* **Features:** **70 total features** after engineering, including:
+    * Meteorological Parameters: Solar Irradiance (DHI, DNI, GHI), Wind Speed, Humidity, Temperature.
+    * Energy Production Data: Solar (PV) and Wind generation (target variables).
+    * Temporal Features: Season, Day of Week, and Lag Features.
+
+### 2. Preprocessing Pipeline
+The data undergoes a strict chronological pipeline to ensure quality and time-series integrity:
+1.  **Load Database:** Ingesting the initial time-series data.
+2.  **Feature Engineering:** Time Series Conversion, adding temporal features, and creating 70 lag features.
+3.  **Outlier Removal:** Using the **Interquartile Range (IQR) Method** to ensure data consistency.
+4.  **Normalization:** Applying **MinMaxScaler (Scale to 0-1)** for deep learning readiness.
+5.  **Data Splitting:** **70% Training / 30% Testing**. The split is **Chronological** for time series integrity, and a separate Random Shuffling split was also created for multi-output training.
 
 
-Our hybrid LSTM+CNN model combines:
-CNN layers for spatial feature extraction from weather patterns
-LSTM layers for temporal sequence learning
-Dense layers for non-linear mapping to energy production
 
-This architecture outperforms all baseline models in prediction accuracy.
-
-## 🔍 Problem Statement
-
-
-Renewable energy sources like solar and wind are intermittent and weather-dependent, creating challenges for grid stability and power distribution, energy storage planning, backup power management and cost optimization.
+---
 
 ## 🔄 Model Evolution Pipeline
 
-This project follows a progressive modeling approach, where each model builds upon insights from previous iterations:
-## Phase 1: Traditional Machine Learning
-## 1️⃣ Linear Regression (Baseline)
+This project follows a progressive modeling approach, where we systematically assess and evolve the architecture based on the limitations observed in previous models.
 
-1. Purpose: Establish performance baseline against which all complex models are compared.
+### Phase 1: Traditional Machine Learning (Baseline)
 
-2. Approach: Models the simple linear relationships between meteorological and temporal features and the corresponding energy output.
+| Model | Purpose | Key Limitation Addressed | Discussion Insights |
+| :--- | :--- | :--- | :--- |
+| **Linear Regression** | Baseline Performance | None (Establishes low-end benchmark) | Chosen for simplicity, but fundamentally unable to capture **non-linear weather patterns** and temporal dependencies. **Failed for wind prediction ($R^2=0.481$)**. |
+| **Support Vector Regression (SVR)** | Non-linear Relationships | Non-linearity | Uses the "kernel trick" (RBF Kernel) to model non-linear data. Proven more robust than Linear Regression but still lacked temporal awareness. |
 
-3. Advantages: Fast training speed, high interpretability due to easy-to-understand coefficients.
+### Phase 2: Ensemble Methods (Strong Non-Temporal Benchmark)
 
-4. Limitations: Fundamentally unable to capture the complex, non-linear patterns and interactions characteristic of renewable energy data (e.g., the sharp S-curve of solar production).
+| Model | Purpose | Key Limitation Addressed | Discussion Insights |
+| :--- | :--- | :--- | :--- |
+| **Random Forest** (Bagging) | Reduce Variance & Overfitting | High Variance in Single Models | Handled non-linear relationships effectively, achieving drastic improvements. Revealed GHI dominance for solar prediction ($R^2_{PV}=0.983$). |
+| **XGBoost** (Boosting) | Reduce Model Bias | High Model Bias | Sequentially corrects errors of previous weak learners. Provided a strong performance benchmark but **still missed crucial temporal sequence patterns**. |
 
-## 2️⃣ Support Vector Regression (SVR)
+### Phase 3: Deep Learning & Hybrid Architecture
 
-1. Purpose: Introduce a model capable of handling non-linear relationships with high dimensionality.
+| Model | Purpose | Key Contribution | Discussion Insights |
+| :--- | :--- | :--- | :--- |
+| **LSTM** (Long Short-Term Memory) | Capture **Temporal Dependencies** | Sequential Nature of Time Series | **Specifically designed for sequential data**. Captured time-based and seasonal patterns effectively, achieving superior wind prediction ($R^2_{Wind}=0.962$) over tree-based models. |
+| **CNN + LSTM Hybrid** ⭐ | Combine Spatial & Temporal Modeling | Simultaneous Modeling of Local/Long-Term Patterns | Achieved **peak performance** by capturing both local feature patterns (CNN) and long-term dependencies (LSTM) simultaneously. |
 
-2. Approach: Uses a technique called the "kernel trick" to implicitly map the input features into a high-dimensional feature space. This allows the model to find a linear separation (or fit) in that high-dimensional space, which corresponds to a non-linear relationship in the original space.
+### ⭐ Proposed Hybrid Architecture (CNN-LSTM)
 
-3. Advantages: Highly effective in non-linear modeling, robust against overfitting, and works well even when the number of features is greater than the number of samples.
-
-4. Limitations: Computationally expensive and slow to train on very large datasets compared to tree-based methods. Performance is highly dependent on the choice of kernel function (e.g., Radial Basis Function or RBF) and hyperparameter tuning.
-
-## Phase 2: Ensemble Methods
-## 3️⃣ Bagging Models (Random Forest)
-
-1. Purpose: Reduce variance and improve stability through ensemble learning.
-
-2. Approach: Trains multiple decision trees independently on different subsets of the data (bootstrap samples) and aggregates their predictions (averaging for regression).
-
-3. Advantages: Reduced overfitting, high parallelization capacity, and provides valuable feature importance analysis.
-
-4. Key Insight: Identifies the most influential static weather parameters (e.g., specific wind speed or GHI ranges) on energy output, giving early insights into feature causality.
-
-
-## 4️⃣ Boosting Models (Gradient Boosting, XGBoost)
-
-1. Purpose: Reduce model bias by sequentially improving weak learners.
-
-2. Approach: Iteratively builds an ensemble where each new decision tree attempts to correct the errors (residuals) made by the combination of all previous trees.
-
-3. Advantages: High prediction accuracy, superior handling of complex interactions, and built-in regularization (in modern implementations like XGBoost) to prevent overfitting.
-
-4. Key Insight: Provides the strongest non-temporal benchmark performance by focusing prediction power on the hardest-to-predict data points.
-
-## Phase 3: Deep Learning
-## 5️⃣ LSTM (Long Short-Term Memory)
-
-Purpose: Capture temporal dependencies in time-series data
-Architecture:
-
-  Input → LSTM Layer(s) → Dense Layers → Output
-
-Advantages:
-
-Remembers long-term patterns
-Handles sequential weather data
-Captures seasonal variations
-
-
-Key Insight: Time-based patterns crucial for energy prediction
-
-6️⃣ LSTM + CNN Hybrid ⭐ Final Model
-
-Purpose: Combine spatial feature extraction with temporal modeling
-Architecture:
-
-  Input Features
-       ↓
-  Conv1D Layers (Feature Extraction)
-       ↓
-  MaxPooling (Dimensionality Reduction)
-       ↓
-  LSTM Layers (Temporal Patterns)
-       ↓
-  Dropout (Regularization)
-       ↓
-  Dense Layers (Non-linear Mapping)
-       ↓
-  Output (Energy Production)
-
-Advantages:
-
-CNN: Extracts local patterns and interactions between weather features
-LSTM: Models temporal dependencies and seasonal trends
-Synergy: Combines best of both architectures
-
-
-Why It Works:
-
-Weather patterns have both spatial (feature interactions) and temporal (time-series) characteristics
-CNNs detect critical feature combinations
-LSTMs track how these patterns evolve over time
+| Component | Function | Detail |
+| :--- | :--- | :--- |
+| **Conv1D Layer** (64 filters, kernel=3) | **Spatial Feature Extraction** | Automatically identifies important local patterns and interactions within the weather feature sequences. |
+| **MaxPooling1D** (pool\_size=2) | **Dimensionality Reduction** | Reduces the size of the extracted features, making the model more robust and efficient. |
+| **LSTM Layer** (64 Units) | **Temporal Sequence Learning** | Processes the filtered sequences over time to understand long-term dependencies and temporal dynamics. |
+| **Dropout (0.2)** | **Regularization** | Prevents overfitting during the training of the deep architecture. |
+| **Dense Layers** (32 Units) | **Feature Consolidation** | Non-linear mapping and consolidation of the combined spatial and temporal features. |
+| **Output Layer** (2 Units, Linear) | **Simultaneous Prediction** | Generates simultaneous predictions for both Solar (PV) and Wind power output. |
 
 
 
+---
 
-✨ Key Features
-🔬 Comprehensive Model Comparison
+## 🏆 Results and Best Performance
 
-Six different modeling approaches evaluated systematically
-Fair comparison using identical train/test splits
-Multiple evaluation metrics (MAE, RMSE, R², MAPE)
+All models were trained using standard deep learning practices (Early Stopping, MSE loss) and evaluated on key metrics including **$R^2$, RMSE, and MAE**.
 
-🌦️ Weather-Based Forecasting
+### Model Performance Summary
 
-Utilizes multiple meteorological parameters
-Handles seasonal variations automatically
-Adapts to changing weather patterns
+| Model | PV $R^2$ | Wind $R^2$ | PV MAE | Wind MAE | Key Takeaway |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Linear Regression | 0.903 | 0.481 | 784.2 | 692.4 | Poorly handles non-linearity; fails for wind. |
+| SVR(RBF) | 0.911 | 0.554 | 652.0 | 615.3 | Better non-linearity, but not competitive. |
+| Random Forest | 0.983 | 0.946 | 198.8 | 142.2 | Excellent non-temporal performance; struggles with pure time-series. |
+| XGBoost | 0.971 | 0.837 | 318.1 | 348.6 | Strong ensemble; better for PV than Wind. |
+| LSTM | 0.980 | 0.962 | 506.8 | 188.2 | Superior for Wind, capturing temporal trends. |
+| **CNN+LSTM** | **0.983** | **0.965** | 367.7 | **178.5** | **Peak Overall Performance (Highest combined $R^2$)** |
 
-⚡ Dual Energy Source Prediction
+### Best Configuration Hyperparameters
 
-Solar PV: Predicts photovoltaic energy production
-Wind Power: Forecasts wind turbine output
-Unified framework for both energy sources
+The optimal model configuration was determined via **Grid Search** across 12 configurations (3 Window Sizes $\times$ 4 Activation Combinations).
 
-📊 Advanced Data Processing
+| Parameter | Optimal Value |
+| :--- | :--- |
+| **Window Size** | **48** (70 features $\times$ 48 time steps) |
+| **Conv Activation** | **tanh** |
+| **LSTM Activation** | **sigmoid / sigmoid** |
+| **Dense Activation** | **elu** |
 
-Feature engineering and normalization
-Time-series windowing for sequential models
-Handling of missing data and outliers
+### Final Model Performance (CNN-LSTM)
 
-🎯 Production-Ready Code
+| Metric | PV Production | Wind Production |
+| :--- | :--- | :--- |
+| **$R^2$ (Coefficient of Determination)** | **$0.983$** | **$0.965$** |
+| **RMSE (Root Mean Squared Error)** | $547$ MW | $222$ MW |
 
-Modular and maintainable codebase
-Jupyter notebooks for experimentation
-Python scripts for deployment
+This robust performance demonstrates that the CNN-LSTM hybrid model effectively captures both the **spatial feature interactions** and the **long-term temporal patterns** in renewable energy data.
+
+---
+
+## 👩‍🔬 Team Roles & Contributions
+
+| Name | Roll Number | Primary Contributions |
+| :--- | :--- | :--- |
+| **Mihika** | 2301CS31 | Built predictive models: Implemented Linear Regression and Random Forest. |
+| **Saniya Prakash** | 2301CS49 | **Data Preprocessing Specialist**: Outlier detection, normalization, and feature engineering. Implemented XGBoost. |
+| **Shefali Bishnoi** | 2301CS87 | Implemented SVR with multiple kernels and the core LSTM model. Prepared research documentation. |
+| **Juhi Sahni** | 2301CS88 | **Project Lead & Architect**: Defined overall roadmap, ensured integration. Implemented and optimized the **CNN-LSTM hybrid model** and oversaw version control. |
+
+---
+

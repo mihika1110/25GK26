@@ -42,6 +42,8 @@ Our project tackles this clear problem by creating models that can match unstabl
     * Meteorological Parameters: Solar Irradiance (DHI, DNI, GHI), Wind Speed, Humidity, Temperature.
     * Energy Production Data: Solar (PV) and Wind generation (target variables).
     * Temporal Features: Season, Day of Week, and Lag Features.
+* **Dataset Source:** [Renewable Energy & Electricity Demand Time Series Dataset (Mendeley Data)](https://data.mendeley.com/datasets/fdfftr3tc2/1/files/fff037a3-d0e4-496f-92f7-5c5820a734f1)
+
 
 ### 2. Preprocessing Pipeline
 The data undergoes a strict chronological pipeline to ensure quality and time-series integrity:

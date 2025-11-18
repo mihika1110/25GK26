@@ -1,18 +1,16 @@
 
 
-# ⚡ Renewable Energy Production Prediction Using Hybrid ML Models
+#  Renewable Energy Production Prediction Using Hybrid ML Models
 
-[![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python Version](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
-[![Model Performance](https://img.shields.io/badge/CNN%2BLSTM%20R%C2%B2-0.983%20PV%20%7C%200.965%20Wind-success)](README.md#results-and-best-performance)
 
-## 🌟 Overview
+
+##  Overview
 
 This project presents a systematic and rigorous approach to **renewable energy forecasting** by implementing and comparing six distinct machine learning models, progressing from traditional statistical methods to advanced deep learning architectures. The final **CNN-LSTM hybrid model** achieves superior performance in accurately predicting both **Solar Photovoltaic (PV)** and **Wind energy production**.
 
 ---
 
-## 🎯 Project Objectives & Problem Statement
+##  Project Objectives & Problem Statement
 
 ### Problem Statement
 Renewable energy sources like solar and wind are inherently **intermittent and weather-dependent**. This instability poses significant challenges for:
@@ -33,7 +31,7 @@ Our project tackles this clear problem by creating models that can match unstabl
 
 ---
 
-## 🛠️ Methodology and Data Processing
+##  Methodology and Data Processing
 
 ### 1. Our Dataset
 * **Data Size:** 38,880 samples collected at **5-minute intervals**.
@@ -57,7 +55,7 @@ The data undergoes a strict chronological pipeline to ensure quality and time-se
 
 ---
 
-## 🔄 Model Evolution Pipeline
+##  Model Evolution Pipeline
 
 This project follows a progressive modeling approach, where we systematically assess and evolve the architecture based on the limitations observed in previous models.
 
@@ -80,9 +78,9 @@ This project follows a progressive modeling approach, where we systematically as
 | Model | Purpose | Key Contribution | Discussion Insights |
 | :--- | :--- | :--- | :--- |
 | **LSTM** (Long Short-Term Memory) | Capture **Temporal Dependencies** | Sequential Nature of Time Series | **Specifically designed for sequential data**. Captured time-based and seasonal patterns effectively, achieving superior wind prediction ($R^2_{Wind}=0.962$) over tree-based models. |
-| **CNN + LSTM Hybrid** ⭐ | Combine Spatial & Temporal Modeling | Simultaneous Modeling of Local/Long-Term Patterns | Achieved **peak performance** by capturing both local feature patterns (CNN) and long-term dependencies (LSTM) simultaneously. |
+| **CNN + LSTM Hybrid**  | Combine Spatial & Temporal Modeling | Simultaneous Modeling of Local/Long-Term Patterns | Achieved **peak performance** by capturing both local feature patterns (CNN) and long-term dependencies (LSTM) simultaneously. |
 
-### ⭐ Proposed Hybrid Architecture (CNN-LSTM)
+###  Proposed Hybrid Architecture (CNN-LSTM)
 
 | Component | Function | Detail |
 | :--- | :--- | :--- |
@@ -97,7 +95,7 @@ This project follows a progressive modeling approach, where we systematically as
 
 ---
 
-## 🏆 Results and Best Performance
+##  Results and Best Performance
 
 All models were trained using standard deep learning practices (Early Stopping, MSE loss) and evaluated on key metrics including **$R^2$, RMSE, and MAE**.
 
@@ -134,7 +132,7 @@ This robust performance demonstrates that the CNN-LSTM hybrid model effectively 
 
 ---
 
-## 👩‍🔬 Team Roles & Contributions
+##  Team Roles & Contributions
 
 | Name | Roll Number | Primary Contributions |
 | :--- | :--- | :--- |
